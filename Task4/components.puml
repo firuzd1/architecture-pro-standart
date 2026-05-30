@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Компоненты - передача ставок в кол-центр
+
+Person(backoffice, "Менеджер бэк-офиса", "управляет ставками")
+Person(callcenter_manager, "Менеджер кол-центра", "консультирует клиентов")
+
+System_Boundary(abs_boundary, "АБС") {
+    Component(rates_ui, "Интерфейс управления ставками", "Delphi", "менеджер бэк-офиса управляет ставками вместо Excel")
+    Component(rates_db, "Справочник ставок", "Oracle", "хранит актуальные ставки по депозитам")
+    Component(rates_export, "Сервис выгрузки ставок", "PL-SQL", "раз в день выгружает ставки в кол-центр и формирует файл для SFTP")
+}
+
+System_Boundary(cc_boundary, "Система кол-центра") {
+    Component(rates_view, "Раздел просмотра ставок", "React.js", "менеджеры видят актуальные ставки")
+    Component(rates_sync, "Сервис синхронизации ставок", "Java Spring Boot", "получает ставки из АБС по расписанию")
+    ComponentDb(cc_rates_db, "Таблица ставок", "PostgreSQL", "локальная копия ставок для быстрого доступа")
+}
+
+System_Ext(sftp, "SFTP сервер", "передача файлов")
+System_Ext(partner_cc, "Партнёрский кол-центр")
+
+Rel(backoffice, rates_ui, "обновляет ставки")
+Rel(rates_ui, rates_db, "сохраняет", "SQL")
+Rel(rates_export, rates_db, "читает ставки", "SQL")
+Rel(rates_export, rates_sync, "передаёт ставки", "API")
+Rel(rates_export, sftp, "выгружает файл", "SFTP")
+Rel(sftp, partner_cc, "передаёт файл")
+Rel(rates_sync, cc_rates_db, "сохраняет", "SQL")
+Rel(callcenter_manager, rates_view, "смотрит ставки")
+Rel(rates_view, cc_rates_db, "читает", "SQL")
+
+@enduml

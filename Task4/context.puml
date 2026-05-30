@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Контекст системы - передача ставок в кол-центр
+
+Person(backoffice, "Менеджер бэк-офиса депозитов", "управляет ставками по депозитам")
+Person(callcenter_manager, "Менеджер кол-центра", "консультирует клиентов по ставкам")
+
+System(abs, "АБС", "хранит ставки по депозитам, выгружает их в кол-центр")
+System(callcenter_sys, "Система кол-центра", "показывает актуальные ставки менеджерам")
+
+System_Ext(partner_cc, "Партнёрский кол-центр", "получает ставки через SFTP файлы")
+System_Ext(sftp, "SFTP сервер", "передача файлов партнёрскому кол-центру")
+
+Rel(backoffice, abs, "обновляет ставки")
+Rel(callcenter_manager, callcenter_sys, "смотрит актуальные ставки")
+Rel(abs, callcenter_sys, "передаёт ставки раз в день", "API")
+Rel(abs, sftp, "выгружает файл со ставками", "SFTP")
+Rel(sftp, partner_cc, "передаёт файл")
+
+@enduml
