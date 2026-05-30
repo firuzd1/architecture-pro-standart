@@ -1,0 +1,30 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Контекст системы - открытие депозитов (MVP)
+
+Person(client, "Клиент", "существующий клиент банка, хочет открыть депозит онлайн")
+Person(new_client, "Новый клиент", "хочет узнать условия и подать заявку на депозит")
+Person(backoffice, "Менеджер бэк-офиса", "обрабатывает заявки на депозиты в АБС")
+Person(callcenter, "Менеджер кол-центра", "консультирует клиентов по ставкам")
+
+System(internet_bank, "Интернет-банк", "клиент подаёт заявку на депозит, видит ставки")
+System(site, "Сайт банка", "новый клиент оставляет заявку, видит список депозитов")
+System(abs, "АБС", "основная система банка, хранит счета, депозиты, ставки")
+System(callcenter_sys, "Система кол-центра", "менеджеры обрабатывают обращения клиентов")
+
+System_Ext(sms, "СМС-шлюз", "отправляет смс-уведомления клиентам")
+System_Ext(partner_cc, "Партнёрский кол-центр", "консультирует клиентов по ставкам")
+
+Rel(client, internet_bank, "подаёт заявку на депозит", "HTTPS")
+Rel(new_client, site, "оставляет заявку", "HTTPS")
+Rel(new_client, callcenter_sys, "звонит для уточнения условий")
+Rel(backoffice, abs, "обрабатывает заявки, управляет ставками")
+Rel(callcenter, callcenter_sys, "консультирует клиентов")
+Rel(internet_bank, abs, "передаёт заявки", "очередь сообщений")
+Rel(site, callcenter_sys, "передаёт заявки", "API")
+Rel(abs, sms, "отправляет уведомления", "HTTP")
+Rel(callcenter_sys, abs, "передаёт обращения")
+Rel(callcenter_sys, partner_cc, "передаёт ставки", "SFTP файлы")
+
+@enduml
