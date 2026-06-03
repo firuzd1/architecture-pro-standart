@@ -1,0 +1,52 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Диаграмма контейнеров - открытие депозитов (MVP)
+
+Person(client, "Клиент", "существующий клиент банка")
+Person(new_client, "Новый клиент")
+Person(backoffice, "Менеджер бэк-офиса")
+Person(callcenter_manager, "Менеджер кол-центра")
+
+System_Boundary(internet_bank, "Интернет-банк") {
+    Container(ib_web, "Веб-приложение", "ASP.NET MVC 4.5", "интерфейс клиента, список депозитов, форма заявки")
+    Container(ib_deposit, "Модуль депозитов", "ASP.NET, C#", "логика подачи заявок, работа со ставками, смс-подтверждение")
+    ContainerDb(ib_db, "База данных", "MS SQL", "заявки на депозиты, ставки, данные сессий")
+}
+
+System_Boundary(site_boundary, "Сайт банка") {
+    Container(site_web, "Сайт", "PHP + React.js", "список депозитов, форма заявки для новых клиентов")
+}
+
+System_Boundary(abs_boundary, "АБС") {
+    Container(abs_api, "Сервис интеграции", "PL-SQL, Oracle", "обработка заявок, управление депозитами и ставками")
+    ContainerDb(abs_db, "База данных АБС", "Oracle", "счета, депозиты, клиенты, ставки")
+}
+
+System_Boundary(cc_boundary, "Система кол-центра") {
+    Container(cc_app, "Приложение кол-центра", "Java Spring Boot", "обработка обращений, просмотр ставок")
+    ContainerDb(cc_db, "База данных", "PostgreSQL", "обращения, заявки с сайта")
+}
+
+Container(mq, "Очередь сообщений", "Kafka (перспектива) / промежуточный сервис", "передача заявок из интернет-банка в АБС без прямых вызовов")
+
+System_Ext(sms_gw, "СМС-шлюз", "отправка смс клиентам")
+System_Ext(partner_cc, "Партнёрский кол-центр", "внешняя система")
+
+Rel(client, ib_web, "открывает браузер", "HTTPS")
+Rel(new_client, site_web, "оставляет заявку", "HTTPS")
+Rel(ib_web, ib_deposit, "вызывает")
+Rel(ib_deposit, ib_db, "читает/пишет", "SQL")
+Rel(ib_deposit, mq, "отправляет заявку")
+Rel(mq, abs_api, "передаёт заявку")
+Rel(abs_api, abs_db, "читает/пишет", "SQL")
+Rel(abs_api, sms_gw, "отправляет смс", "HTTP")
+Rel(backoffice, abs_api, "обрабатывает заявки")
+Rel(site_web, cc_app, "передаёт заявку", "API")
+Rel(cc_app, cc_db, "читает/пишет", "SQL")
+Rel(cc_app, abs_api, "передаёт обращения")
+Rel(callcenter_manager, cc_app, "работает в системе")
+Rel(cc_app, partner_cc, "передаёт ставки", "SFTP")
+Rel(ib_deposit, abs_api, "получает ставки", "HTTP")
+
+@enduml

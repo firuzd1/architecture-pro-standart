@@ -1,0 +1,46 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Компоненты - заявка на кредит онлайн
+
+Person(client, "Клиент")
+Person(new_client, "Новый клиент")
+Person(credit_manager, "Менеджер кредитного отдела")
+
+System_Boundary(ib, "Интернет-банк") {
+    Component(ib_credit, "Модуль кредитов", "ASP.NET", "предодобренные предложения, форма заявки")
+    ComponentDb(ib_db, "БД интернет-банка", "MS SQL", "заявки, сессии")
+}
+
+System_Boundary(site_b, "Сайт") {
+    Component(site_form, "Форма заявки на кредит", "PHP + React.js", "ФИО, телефон, паспортные данные")
+}
+
+System_Boundary(abs_b, "АБС") {
+    Component(abs_credits, "Модуль кредитных заявок", "PL-SQL", "хранит заявки, передаёт в конвейер раз в сутки")
+    ComponentDb(abs_db, "БД АБС", "Oracle", "заявки, клиенты, счета")
+}
+
+System_Boundary(conveyor_b, "Кредитный конвейер") {
+    Component(conveyor_app, "Обработка заявок", "Camunda + Java", "менеджеры обрабатывают заявки")
+    Component(priority_queue, "Очередь предодобренных", "Camunda", "приоритетная обработка предодобренных заявок")
+}
+
+System_Ext(scoring, "Система скоринга", "Python/Flask")
+System_Ext(bki, "БКИ", "внешний API")
+System_Ext(sms, "СМС-шлюз")
+
+Rel(client, ib_credit, "подаёт заявку", "HTTPS")
+Rel(new_client, site_form, "оставляет заявку", "HTTPS")
+Rel(ib_credit, ib_db, "сохраняет заявку", "SQL")
+Rel(ib_credit, abs_credits, "передаёт заявку")
+Rel(site_form, scoring, "запрашивает скоринг", "API")
+Rel(scoring, bki, "запрашивает историю", "REST API")
+Rel(abs_credits, abs_db, "читает/пишет", "SQL")
+Rel(abs_credits, conveyor_app, "передаёт раз в сутки")
+Rel(abs_credits, priority_queue, "передаёт предодобренные")
+Rel(conveyor_app, scoring, "запрашивает скоринг", "API")
+Rel(credit_manager, conveyor_app, "обрабатывает заявки")
+Rel(abs_credits, sms, "уведомления клиенту")
+
+@enduml

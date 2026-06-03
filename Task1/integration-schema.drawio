@@ -1,0 +1,73 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="1006" dy="624" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;whiteSpace=wrap;" value="Клиент" vertex="1">
+          <mxGeometry height="50" width="120" x="450" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;whiteSpace=wrap;" value="Сайт&#xa;(PHP + React.js)" vertex="1">
+          <mxGeometry height="50" width="140" x="200" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;whiteSpace=wrap;" value="Интернет-банк&#xa;(ASP.NET MVC, MS SQL)" vertex="1">
+          <mxGeometry height="50" width="160" x="450" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;whiteSpace=wrap;" value="Система кол-центра&#xa;(Java Spring Boot, PostgreSQL)" vertex="1">
+          <mxGeometry height="50" width="180" x="750" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d6b656;whiteSpace=wrap;" value="АБС&#xa;(Delphi, Oracle/PL-SQL)" vertex="1">
+          <mxGeometry height="50" width="160" x="450" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d6b656;whiteSpace=wrap;" value="Кредитный конвейер&#xa;(Camunda, Oracle)" vertex="1">
+          <mxGeometry height="50" width="180" x="750" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d6b656;whiteSpace=wrap;" value="Система скоринга&#xa;(Python/Flask, PostgreSQL)" vertex="1">
+          <mxGeometry height="50" width="180" x="750" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;whiteSpace=wrap;" value="СМС-шлюз&#xa;телеком-оператора" vertex="1">
+          <mxGeometry height="50" width="160" x="200" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;whiteSpace=wrap;" value="Бюро кредитных историй&#xa;(внешний REST API)" vertex="1">
+          <mxGeometry height="50" width="180" x="1000" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;whiteSpace=wrap;" value="Партнёрский кол-центр&#xa;(внешняя система)" vertex="1">
+          <mxGeometry height="50" width="180" x="1000" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="20" edge="1" parent="1" source="2" target="3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" edge="1" parent="1" source="2" target="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" edge="1" parent="1" source="2" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" edge="1" parent="1" source="4" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" edge="1" parent="1" source="5" target="6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" edge="1" parent="1" source="6" target="7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" edge="1" parent="1" source="7" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" edge="1" parent="1" source="8" target="10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" edge="1" parent="1" source="6" target="9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" edge="1" parent="1" source="5" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" edge="1" parent="1" source="3" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
